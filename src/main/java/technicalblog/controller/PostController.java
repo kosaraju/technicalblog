@@ -20,7 +20,10 @@ public class PostController {
 
     @RequestMapping("posts")
     public String getUserPosts(Model model){
-        List<Post> posts = postService.getOnePost();
+        List<Post> posts ;
+//        Post latestPost = postService.getOnePost();
+//        posts.add(latestPost);
+        posts = postService.getAllPosts();
         model.addAttribute("posts",posts);
         return "posts";
     }

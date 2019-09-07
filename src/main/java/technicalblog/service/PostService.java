@@ -1,8 +1,10 @@
 package technicalblog.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import technicalblog.model.Post;
+import technicalblog.repository.PostRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -16,12 +18,15 @@ import java.util.List;
 @Service
 public class PostService {
 
+    @Autowired
+    private PostRepository repository;
+
     public PostService() {
         System.out.println("Post Service created");
     }
-
-    @PersistenceUnit(unitName = "techblog")
-    private EntityManagerFactory emf;
+//
+//    @PersistenceUnit(unitName = "techblog")
+//    private EntityManagerFactory emf;
     public List<Post> getAllPosts() {
 
         //ArrayList<Post> posts = new ArrayList();
@@ -66,15 +71,15 @@ public class PostService {
 //                e.printStackTrace();
 //            }
 //        }
-        EntityManager em = emf.createEntityManager();
-        TypedQuery<Post> query = em.createQuery("SELECT p from Post p", Post.class);
-        List<Post> resultList = query.getResultList();
-
-        return resultList;
-
+//        EntityManager em = emf.createEntityManager();
+//        TypedQuery<Post> query = em.createQuery("SELECT p from Post p", Post.class);
+//        List<Post> resultList = query.getResultList();
+//
+//        return resultList;
+        return repository.getAllPosts();
     }
 
-    public List<Post> getOnePost() {
+    public Post getOnePost() {
 
 //        ArrayList<Post> posts = new ArrayList();
 //        Post post1 = new Post();
@@ -109,15 +114,18 @@ public class PostService {
 //        }
 //        return posts;
 
-        EntityManager em = emf.createEntityManager();
-        TypedQuery<Post> query = em.createQuery("SELECT p from Post p", Post.class);
-        List<Post> resultList = query.getResultList();
+//        EntityManager em = emf.createEntityManager();
+//        TypedQuery<Post> query = em.createQuery("SELECT p from Post p", Post.class);
+//        List<Post> resultList = query.getResultList();
+//
+//        return resultList;
 
-        return resultList;
-
+        return repository.getLatestPost();
     }
 
     public void createPost (Post newPost){
-
+        newPost.setDate(new Date());
+        repository.createPost(newPost);
+        System.out.println("newPost : "+newPost);
     }
 }
